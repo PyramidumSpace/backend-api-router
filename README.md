@@ -1,2 +1,2 @@
-# Pyramidum-BE-API-router
+# API Router
 API-router service
