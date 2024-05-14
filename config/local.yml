@@ -1,0 +1,5 @@
+http_server:
+  address: ":6969"
+  shutdown_timeout: 5s
+grpc_auth_server:
+  address: "84.237.53.136:44044"
