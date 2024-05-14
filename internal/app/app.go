@@ -35,7 +35,7 @@ func NewApp(log *slog.Logger, cfg *config.Config, envVars *env.Env) (*App, error
 	}
 
 	router.POST("/api/auth/register", authReg.MakeGetHandlerFunc(log, newRegService))
-	router.POST("api/auth/login", authLog.MakeGetHandlerFunc(log, newLogService))
+	router.POST("/api/auth/login", authLog.MakeGetHandlerFunc(log, newLogService))
 
 	srv := &http.Server{
 		Addr:    cfg.HTTPServer.Address,
