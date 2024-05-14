@@ -14,7 +14,7 @@ type Service struct {
 }
 
 func NewService(serverAddress string) (*Service, error) {
-	const op = "services.auth.register.Register"
+	const op = "services.auth.register.NewService"
 
 	conn, err := grpc.Dial(serverAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
