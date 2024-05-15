@@ -50,17 +50,17 @@ func NewApp(log *slog.Logger, cfg *config.Config, envVars *env.Env) (*App, error
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskPostService, err := taskPostImpl.NewService(cfg.GrpcAuthServer.Address)
+	newTaskPostService, err := taskPostImpl.NewService(cfg.GrpcTasksServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskPutService, err := taskPutImpl.NewService(cfg.GrpcAuthServer.Address)
+	newTaskPutService, err := taskPutImpl.NewService(cfg.GrpcTasksServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskGetByUidService, err := taskGetByUidImpl.NewService(cfg.GrpcAuthServer.Address)
+	newTaskGetByUidService, err := taskGetByUidImpl.NewService(cfg.GrpcTasksServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}

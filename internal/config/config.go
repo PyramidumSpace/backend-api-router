@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	HTTPServer     HTTPServer     `yaml:"http_server"`
-	GrpcAuthServer GrpcAuthServer `yaml:"grpc_auth_server"`
+	HTTPServer      HTTPServer      `yaml:"http_server"`
+	GrpcAuthServer  GrpcAuthServer  `yaml:"grpc_auth_server"`
+	GrpcTasksServer GrpcTasksServer `yaml:"grpc_tasks_server"`
 }
 
 type HTTPServer struct {
@@ -18,6 +19,10 @@ type HTTPServer struct {
 }
 
 type GrpcAuthServer struct {
+	Address string `yaml:"address"`
+}
+
+type GrpcTasksServer struct {
 	Address string `yaml:"address"`
 }
 
