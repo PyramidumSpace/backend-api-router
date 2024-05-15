@@ -10,10 +10,12 @@ import (
 	"github.com/g-vinokurov/pyramidum-backend-api-router/internal/env"
 	authLog "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/auth/login"
 	authReg "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/auth/register"
+	taskGetByUID "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/tasks/get"
 	taskPost "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/tasks/post"
 	taskPut "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/tasks/put"
 	logImpl "github.com/g-vinokurov/pyramidum-backend-api-router/internal/service/auth/login"
 	regImpl "github.com/g-vinokurov/pyramidum-backend-api-router/internal/service/auth/register"
+	taskGetByUidImpl "github.com/g-vinokurov/pyramidum-backend-api-router/internal/service/tasks/get"
 	taskPostImpl "github.com/g-vinokurov/pyramidum-backend-api-router/internal/service/tasks/post"
 	taskPutImpl "github.com/g-vinokurov/pyramidum-backend-api-router/internal/service/tasks/put"
 	"github.com/gin-gonic/gin"
@@ -58,10 +60,16 @@ func NewApp(log *slog.Logger, cfg *config.Config, envVars *env.Env) (*App, error
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
+	newTaskGetByUidService, err := taskGetByUidImpl.NewService(cfg.GrpcAuthServer.Address)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
 	router.POST("/api/auth/register", authReg.MakeGetHandlerFunc(log, newRegService))
 	router.POST("/api/auth/login", authLog.MakeGetHandlerFunc(log, newLogService))
 	router.POST("/api/tasks", taskPost.MakeGetHandlerFunc(log, newTaskPostService))
 	router.PUT("/api/tasks", taskPut.MakeGetHandlerFunc(log, newTaskPutService))
+	router.GET("/api/tasks", taskGetByUID.MakeGetHandlerFunc(log, newTaskGetByUidService))
 
 	srv := &http.Server{
 		Addr:    cfg.HTTPServer.Address,
