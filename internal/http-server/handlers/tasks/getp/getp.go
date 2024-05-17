@@ -1,10 +1,8 @@
-package get
+package getp
 
 import (
-	"fmt"
 	"log/slog"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -26,14 +24,14 @@ type Task struct {
 	Weight           int32                `json:"weight"`
 }
 type Response struct {
-	Tasks []Task `json:"tasks"`
+	Task Task `json:"tasks"`
 }
 type TaskGetter interface {
-	Get(user_id int32) ([]*tasks.Task, error)
+	Get(task_id []byte) (*tasks.Task, error)
 }
 
 func MakeGetHandlerFunc(log *slog.Logger, getter TaskGetter) gin.HandlerFunc {
-	const op = "http-server.handlers.tasks.get.MakeGetHandlerFunc"
+	const op = "http-server.handlers.tasks.getp.MakeGetHandlerFunc"
 
 	log = log.With(
 		slog.String("op", op),
@@ -41,21 +39,17 @@ func MakeGetHandlerFunc(log *slog.Logger, getter TaskGetter) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 
-		userIdStr := c.Query("user_id")
-		if userIdStr == "" {
+		taskIdStr := c.Param("task_id")
+		if taskIdStr == "" {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "The user_id parameter was not passed",
+				"error": "The task_id parameter was not passed",
 			})
 			return
 		}
 
-		userIdInt, err := strconv.Atoi(userIdStr)
-		if err != nil {
-			fmt.Println("Ошибка:", err)
-			return
-		}
+		taskIdByte := []byte(taskIdStr)
 
-		task_list, err := getter.Get(int32(userIdInt))
+		task, err := getter.Get(taskIdByte)
 		if err != nil {
 			log.Error("error while registration")
 
@@ -67,7 +61,7 @@ func MakeGetHandlerFunc(log *slog.Logger, getter TaskGetter) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"tasks": task_list,
+			"task": task,
 		})
 	}
 }
