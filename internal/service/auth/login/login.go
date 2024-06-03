@@ -1,4 +1,4 @@
-package register
+package login
 
 import (
 	"context"
@@ -14,7 +14,7 @@ type Service struct {
 }
 
 func NewService(serverAddress string) (*Service, error) {
-	const op = "services.auth.register.NewService"
+	const op = "services.auth.login.Login"
 
 	conn, err := grpc.Dial(serverAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -27,10 +27,10 @@ func NewService(serverAddress string) (*Service, error) {
 	}, nil
 }
 
-func (s *Service) Register(email string, password string) (int64, error) {
-	const op = "services.auth.register.Register"
+func (s *Service) Login(email string, password string) (int64, error) {
+	const op = "services.auth.login.Login"
 
-	response, err := s.client.Register(context.TODO(), &auth.RegisterRequest{
+	response, err := s.client.Login(context.TODO(), &auth.LoginRequest{
 		Email:    email,
 		Password: password,
 	})

@@ -3,3 +3,5 @@ http_server:
   shutdown_timeout: 5s
 grpc_auth_server:
   address: "84.237.53.136:44044"
+grpc_tasks_server:
+  address: "84.237.53.136:55055"
