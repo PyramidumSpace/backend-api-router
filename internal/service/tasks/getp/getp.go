@@ -30,7 +30,7 @@ func NewService(serverAddress string) (*Service, error) {
 func (s *Service) Get(task_id []byte) (*tasks.Task, error) {
 	const op = "services.tasks.post.Create"
 
-	response, err := s.client.Get(context.TODO(), &tasks.GetRequest{
+	response, err := s.client.Task(context.TODO(), &tasks.TaskRequest{
 		TaskId: task_id,
 	})
 	if err != nil {

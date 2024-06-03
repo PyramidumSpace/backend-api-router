@@ -31,43 +31,43 @@ func NewApp(log *slog.Logger, cfg *config.Config, envVars *env.Env) (*App, error
 	const op = "app.NewApp"
 
 	router := gin.Default()
-	// router.Use(func(c *gin.Context) {
-	// 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	// 	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	// 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	// 	if c.Request.Method == "OPTIONS" {
-	// 		c.AbortWithStatus(http.StatusOK)
-	// 		return
-	// 	}
-	// 	c.Next()
-	// })
+	router.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
+		c.Next()
+	})
 
-	newRegService, err := regImpl.NewService(cfg.GrpcAuthServer.Address)
+	newRegService, err := regImpl.NewService(cfg.GRPCAuthServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newLogService, err := logImpl.NewService(cfg.GrpcAuthServer.Address)
+	newLogService, err := logImpl.NewService(cfg.GRPCAuthServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskPostService, err := taskPostImpl.NewService(cfg.GrpcTasksServer.Address)
+	newTaskPostService, err := taskPostImpl.NewService(cfg.GRPCTaskServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskPutService, err := taskPutImpl.NewService(cfg.GrpcTasksServer.Address)
+	newTaskPutService, err := taskPutImpl.NewService(cfg.GRPCTaskServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskGetByUidService, err := taskGetByUidImpl.NewService(cfg.GrpcTasksServer.Address)
+	newTaskGetByUidService, err := taskGetByUidImpl.NewService(cfg.GRPCTaskServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	newTaskGet, err := taskGetImpl.NewService(cfg.GrpcTasksServer.Address)
+	newTaskGet, err := taskGetImpl.NewService(cfg.GRPCTaskServer.Address)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}

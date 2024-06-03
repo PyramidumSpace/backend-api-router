@@ -10,7 +10,7 @@ import (
 )
 
 type Response struct {
-	ID int64 `json:"task_id"`
+	ID int64 `json:"user_id"`
 }
 
 type CreateTaskRequest struct {

@@ -9,17 +9,14 @@ import (
 
 	"github.com/g-vinokurov/pyramidum-backend-api-router/internal/app"
 	"github.com/g-vinokurov/pyramidum-backend-api-router/internal/config"
-	"github.com/g-vinokurov/pyramidum-backend-api-router/internal/env"
 )
 
 func main() {
 	log := setupLogger()
 
-	envVars := env.MustLoadEnv()
+	cfg := config.MustLoadConfig()
 
-	cfg := config.MustLoadConfig(envVars.ConfigPath)
-
-	application, err := app.NewApp(log, cfg, envVars)
+	application, err := app.NewApp(log, cfg, nil)
 	if err != nil {
 		log.Error("failed to init application", err)
 		os.Exit(1)
