@@ -43,17 +43,7 @@ type Response struct {
 	Tasks []Task `json:"tasks"`
 }
 type TaskGetter interface {
-	Get(user_id int32,
-		search string,
-		deadLineFrom time.Time,
-		deadLineTo time.Time,
-		possibleDeadLineFrom time.Time,
-		possibleDeadLineTo time.Time,
-		progressStatus tasks.ProgressStatus,
-		isUrgent bool,
-		isImportant bool,
-		weightFrom int32,
-		weightTo int32) ([]*tasks.Task, error)
+	Get(user_id int32) ([]*tasks.Task, error)
 }
 
 func MakeGetHandlerFunc(log *slog.Logger, getter TaskGetter) gin.HandlerFunc {
@@ -73,13 +63,13 @@ func MakeGetHandlerFunc(log *slog.Logger, getter TaskGetter) gin.HandlerFunc {
 			return
 		}
 
-		var req TasksRequest
+		//var req TasksRequest
 
-		if err := c.BindJSON(&req); err != nil {
-			log.Error("err: ", err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
+		//if err := c.BindJSON(&req); err != nil {
+		//	log.Error("err: ", err)
+		//	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		//	return
+		//}
 
 		userIdInt, err := strconv.Atoi(userIdStr)
 		if err != nil {
@@ -87,17 +77,7 @@ func MakeGetHandlerFunc(log *slog.Logger, getter TaskGetter) gin.HandlerFunc {
 			return
 		}
 
-		task_list, err := getter.Get(int32(userIdInt),
-			req.Search,
-			req.DeadLineFrom,
-			req.DeadLineTo,
-			req.PossibleDeadLineFrom,
-			req.PossibleDeadLineTo,
-			req.ProgressStatus,
-			req.IsUrgent,
-			req.IsImportant,
-			req.WeightFrom,
-			req.WeightTo)
+		task_list, err := getter.Get(int32(userIdInt))
 		if err != nil {
 			log.Error("error while registration")
 
