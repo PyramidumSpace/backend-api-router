@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/g-vinokurov/pyramidum-backend-api-router/internal/config"
-	"github.com/g-vinokurov/pyramidum-backend-api-router/internal/env"
 	authLog "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/auth/login"
 	authReg "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/auth/register"
 	taskGetByUID "github.com/g-vinokurov/pyramidum-backend-api-router/internal/http-server/handlers/tasks/get"
@@ -27,7 +26,7 @@ type App struct {
 	srv *http.Server
 }
 
-func NewApp(log *slog.Logger, cfg *config.Config, envVars *env.Env) (*App, error) {
+func NewApp(log *slog.Logger, cfg *config.Config) (*App, error) {
 	const op = "app.NewApp"
 
 	router := gin.Default()
